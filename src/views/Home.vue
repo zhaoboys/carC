@@ -39,10 +39,19 @@
             </div>
             <!-- 起点终点选择结束 -->
             <!-- 日期选择开始 -->
-            <div></div>
+            <div>
+                <mt-button @click="startTime">请选择日期</mt-button>
+                <span id="starttime"></span>
+              <mt-datetime-picker type="date" ref="picker" @confirm="ConfirmStartTime" v-model="pickerValue"></mt-datetime-picker>
+            </div>
             <!-- 日期选择结束 -->
             <!-- 查询即特殊选项开始 -->
-            <div></div>
+            <div>
+              <div>
+                  <mt-checklist v-model="crhTrain" id="carRadio" :options="options"  @change="crhTrainDe"></mt-checklist>
+                <mt-checklist id="stuRadio" v-model="Student" :options="options1" @change="stuDe"></mt-checklist>
+              </div>
+            </div>
             <!-- 查询即特殊选项结束-->
           </div>
           <!-- 顶部选择栏结束 -->
@@ -72,17 +81,59 @@ export default {
   data () {
     return {
       selected: 'train',
-      bottom: 'index'
+      bottom: 'index',
+      pickerValue: '',
+      crhTrain: [],
+      Student: [],
+      options: [
+        {
+          label: '高铁动车',
+          value: 'crhTrain'
+        }
+      ],
+      options1: [
+        {
+          label: '学生票',
+          value: 'Student'
+        }
+      ]
     }
   },
   methods: {
     info () {
       this.$router.push('/information')
+    },
+    startTime () {
+      this.$refs.picker.open()
+    },
+    ConfirmStartTime () {
+      const obj = this.pickerValue
+      const arr = ['日', '一', '二', '三', '四', '五', '六']
+      // console.log(obj)
+      // console.log(obj.getFullYear(), obj.getMonth(), obj.getDate(), obj.getDay())
+      document.getElementById('starttime').innerHTML = `${obj.getFullYear()}年${obj.getMonth()}月${obj.getDate()}日 星期${arr[obj.getDay()]}`
+    },
+    // 选择动车按钮
+    crhTrainDe () {
+      console.log(this.crhTrain)
+    },
+    // 学生票按钮
+    stuDe () {
+      console.log(this.Student)
     }
   }
 }
 </script>
 <style scoped>
+#carRadio,#stuRadio{
+  width: 50%;
+  display: inline-block;
+  border: none;
+}
+#starttime{
+  margin-left: 55px;
+  font-size: 15px;
+}
 .line-fir{
   outline: none;
   width: 100%;
@@ -96,15 +147,19 @@ export default {
 .line-2{
   display: inline-block;
   width: 20%;
+  height: 67px;
   text-align: center;
-  border: 0;
-  border-radius: 0%;
+  border: 1px solid rgb(175, 172, 172);
+  border-radius: 50%;
   padding: 0;
   line-height: 60px;
 }
 .line-2>button{
   border: 0;
   border-radius: 50%;
+  width: 57px;
+  background-color:transparent ;
+  outline: none;
 }
 .line-2>button>img{
   width: 100%;
