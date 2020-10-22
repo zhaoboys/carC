@@ -33,9 +33,9 @@
           <div id="topCh">
             <!-- 起点终点选择开始 -->
             <div>
-              <div class="line-1"><input type="text" class="line-fir"></div>
-              <div class="line-2"><button><img src="../assets/转换.png" slot='icon' alt=""></button></div>
-              <div class="line-1"><input type="text" class="line-fir"></div>
+              <div class="line-1"><input v-model="cstart" type="text" class="line-fir" @focus="clear"></div>
+              <div class="line-2" @click="cityChange"><button><img src="../assets/转换.png" slot='icon' alt=""></button></div>
+              <div class="line-1"><input @focus="clear" v-model="cend" type="text" class="line-fir"></div>
             </div>
             <!-- 起点终点选择结束 -->
             <!-- 日期选择开始 -->
@@ -47,10 +47,17 @@
             <!-- 日期选择结束 -->
             <!-- 查询即特殊选项开始 -->
             <div>
+              <!-- 动车和学生票选项开始 -->
               <div>
                   <mt-checklist v-model="crhTrain" id="carRadio" :options="options"  @change="crhTrainDe"></mt-checklist>
                 <mt-checklist id="stuRadio" v-model="Student" :options="options1" @change="stuDe"></mt-checklist>
               </div>
+              <!-- 动车和学生票选项结束 -->
+              <!-- 火车票查询按钮开始 -->
+              <div>
+                <mt-button type="primary" size="large" @click="search">火车票查询</mt-button>
+              </div>
+              <!-- 火车票查询按钮结束 -->
             </div>
             <!-- 查询即特殊选项结束-->
           </div>
@@ -96,10 +103,33 @@ export default {
           label: '学生票',
           value: 'Student'
         }
-      ]
+      ],
+      // 动车出发地
+      cstart: '北京',
+      // 动车目的地
+      cend: '南京'
     }
   },
   methods: {
+    // 清空
+    clear (e) {
+      e.target.value = ''
+    },
+    // 搜寻动车
+    search  () {
+      if (this.pickerValue) {
+        this.$router.push('/searchresult' + '?cstart=' + this.cstart + '&cend=' + this.cend + '&cday=' + this.pickerValue)
+      } else {
+        this.$toast('请选择日期')
+      }
+    },
+    // 出发地与目的地更换
+    cityChange () {
+      let a = ''
+      a = this.cstart
+      this.cstart = this.cend
+      this.cend = a
+    },
     info () {
       this.$router.push('/information')
     },
@@ -176,6 +206,7 @@ export default {
   border-bottom: 1px solid rgba(54, 53, 53, 0.1);
   height: 60px;
   line-height: 60px;
+  text-align: center;
 }
 /* 火车面板样式 */
 #topCh{

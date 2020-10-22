@@ -2,9 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Information from '../views/Information.vue'
+import SearchResult from '../views/SearchResult.vue'
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/searchresult',
+    name: 'SearchResult',
+    component: SearchResult
+  },
   {
     path: '/information',
     name: 'Infromation',
